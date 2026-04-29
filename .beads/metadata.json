@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "acme_wigets_private",
+  "project_id": "54647a45-875f-4bf7-8136-d559c096cc7c"
+}
