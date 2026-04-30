@@ -18,7 +18,7 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 export default function TopNav() {
   return (
     <header className="sticky top-0 z-40 h-[72px] bg-paper/80 backdrop-blur border-b border-ink/10">
-      <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto h-full px-3 sm:px-6 flex items-center justify-between gap-3 sm:gap-4">
         <Link to="/" className="group flex items-center gap-2 sm:gap-3">
           <Cog6ToothIcon
             aria-hidden="true"
@@ -31,7 +31,7 @@ export default function TopNav() {
             </sup>
           </span>
         </Link>
-        <nav aria-label="Primary" className="flex items-center gap-4 sm:gap-8 whitespace-nowrap">
+        <nav aria-label="Primary" className="flex items-center gap-3 sm:gap-8 whitespace-nowrap">
           {links.map(({ to, label, end }) => (
             <NavLink key={to} to={to} end={end} className={linkClass}>
               {label}
