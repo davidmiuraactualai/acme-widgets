@@ -27,7 +27,7 @@ browsing `/widgets`, reading `/orders`.
 
 - **Location:** `e2e/` at the repo root.
 - **Run locally:** `bun run test:e2e`
-- **Headed (debug):** `bun run test:e2e -- --headed`
+- **Headed (debug):** `bun run test:e2e:headed`
 
 Use Playwright when:
 - The behavior depends on routing, real network fetches, or browser APIs.
