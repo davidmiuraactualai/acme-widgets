@@ -7,10 +7,10 @@
     "bun": ">=1.2"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "dev": "bun --bun vite",
+    "build": "bun --bun tsc -b && bun --bun vite build",
+    "preview": "bun --bun vite preview",
+    "typecheck": "bun --bun tsc --noEmit"
   },
   "dependencies": {
     "react": "^19.0.0",
