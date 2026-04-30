@@ -1,1 +1,16 @@
 type,description,number_in_stock,price,icon,categories
+Classic Brass Widget,"A timeless hand-polished brass widget, suitable for everyday use and treasured heirloom display.",42,19.99,brass-widget.svg,everyday;artisanal;gift
+Precision Steel Widget,"Machined to 0.001mm tolerance for industrial assemblies and high-precision applications.",128,89.50,steel-widget.svg,industrial;precision;business
+Pocket Widget Mini,"A travel-sized widget that fits in any pocket. Perfect first widget for kids and curious newcomers.",260,4.99,pocket-widget.svg,everyday;kids;starter
+Birthday Sparkle Widget,"Festive widget with confetti finish, designed to make any birthday celebration sparkle.",75,12.50,sparkle-widget.svg,occasion;birthday;gift
+Wedding Heirloom Widget,"Hand-engraved silver-plated widget presented in a velvet box, a keepsake for the happy couple.",18,149.00,heirloom-widget.svg,occasion;wedding;artisanal;gift
+Holiday Evergreen Widget,"Seasonal widget finished in evergreen lacquer with gold accents for the winter holidays.",94,24.99,evergreen-widget.svg,occasion;holiday;gift
+Heavy-Duty Industrial Widget,"Reinforced cast-iron widget rated for continuous operation in demanding factory environments.",36,219.00,industrial-widget.svg,industrial;business;heavy-duty
+Artisan Walnut Widget,"Hand-turned walnut widget from a small Vermont workshop. Each piece is unique.",22,64.00,walnut-widget.svg,artisanal;gift;everyday
+Replacement Standard Widget,"Direct drop-in replacement for the most common widget assembly. Keep one in the drawer.",410,7.99,standard-widget.svg,everyday;replacement;starter
+Anniversary Gold Widget,"24k gold-leafed widget mounted on a polished marble base. Marks the milestones that matter.",9,389.00,gold-widget.svg,occasion;anniversary;artisanal;gift
+Lab-Grade Calibration Widget,"NIST-traceable calibration widget for laboratory and metrology use, shipped with certificate.",54,142.75,lab-widget.svg,precision;business;laboratory
+Kids' Rainbow Widget,"Brightly colored, BPA-free widget sized for small hands. A great first widget.",185,6.50,rainbow-widget.svg,kids;starter;gift
+Graduation Commemorative Widget,"Engravable widget with mortarboard motif, a thoughtful gift for the new graduate.",47,34.99,graduation-widget.svg,occasion;graduation;gift
+Workshop Bulk-Pack Widget,"Box of 25 general-purpose widgets at a working price for shops, makers, and tinkerers.",62,79.00,bulk-widget.svg,business;everyday;bulk
+Vintage-Style Copper Widget,"Antiqued copper widget styled after the original 1952 Acme catalog design.",28,42.00,copper-widget.svg,artisanal;vintage;everyday
