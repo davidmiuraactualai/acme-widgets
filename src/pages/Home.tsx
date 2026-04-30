@@ -1,9 +1,36 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Cog8ToothIcon } from '@heroicons/react/24/outline';
+import WidgetCard from '../components/WidgetCard';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { fetchWidgets, type Widget } from '../lib/widgets';
+
+const FEATURED_CATEGORIES = ['everyday', 'occasion', 'business'] as const;
+
+function pickFeatured(widgets: Widget[]): Widget[] {
+  return FEATURED_CATEGORIES.map((category) =>
+    widgets.find((w) => w.categories.includes(category)),
+  ).filter((w): w is Widget => w !== undefined);
+}
 
 export default function Home() {
   useDocumentTitle('Home — Acme Widgets');
+
+  const [featured, setFeatured] = useState<Widget[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchWidgets()
+      .then((widgets) => {
+        if (!cancelled) setFeatured(pickFeatured(widgets));
+      })
+      .catch(() => {
+        if (!cancelled) setFeatured([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
@@ -39,6 +66,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {featured.length > 0 && (
+        <section className="mt-8 max-w-6xl mx-auto px-6">
+          <h2 className="font-display font-bold text-[28px] text-ink">
+            Featured this season
+          </h2>
+          <p className="font-sans text-[14px] text-ink-soft mt-1">
+            Three widgets, three reasons.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            {featured.map((widget) => (
+              <WidgetCard key={widget.type} widget={widget} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <p className="mt-20 mb-20 text-center font-sans italic text-[14px] text-ink-soft">
         Hand-curated since 1952. Ships from Vermont, the workshop floor, and
