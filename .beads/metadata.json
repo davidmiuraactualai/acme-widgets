@@ -1,7 +1,7 @@
 {
   "database": "dolt",
   "backend": "dolt",
-  "dolt_mode": "embedded",
+  "dolt_mode": "server",
   "dolt_database": "acme_widgets_private",
   "project_id": "d93c817c-4c12-4c7e-9582-9110a949bfd9"
 }
