@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "bun --bun vite",
     "build": "bun --bun tsc -b && bun --bun vite build",
+    "postbuild": "cp -f dist/index.html dist/404.html",
     "preview": "bun --bun vite preview",
     "typecheck": "bun --bun tsc --noEmit",
     "test": "bun --bun vitest run",
