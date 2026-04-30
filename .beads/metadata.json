@@ -1,7 +1,9 @@
 {
   "database": "dolt",
   "backend": "dolt",
-  "dolt_mode": "embedded",
-  "dolt_database": "acme_wigets_private",
-  "project_id": "54647a45-875f-4bf7-8136-d559c096cc7c"
+  "dolt_mode": "server",
+  "dolt_database": "aw",
+  "project_id": "d93c817c-4c12-4c7e-9582-9110a949bfd9",
+  "dolt_host": "127.0.0.1",
+  "dolt_user": "root"
 }
