@@ -12,7 +12,7 @@ itself, so tests see the code exactly as the bundler sees it.
 
 - **Location:** co-located with source as `*.test.ts` / `*.test.tsx`.
 - **Run locally:** `bun run test`
-- **Watch mode:** `bun run test --watch`
+- **Watch mode:** `bun run test:watch`
 
 Use Vitest when:
 - The unit under test is a pure function, hook, or component.
