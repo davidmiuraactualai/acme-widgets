@@ -7,6 +7,7 @@ import {
 } from 'react-router';
 import TopNav from './components/TopNav';
 import Home from './pages/Home';
+import Orders from './pages/Orders';
 import Widgets, { widgetsLoader, WidgetsHydrateFallback } from './pages/Widgets';
 
 function RouteError() {
@@ -51,15 +52,6 @@ function RootLayout() {
   );
 }
 
-function OrdersPlaceholder() {
-  return (
-    <section className="max-w-2xl mx-auto px-6 py-16">
-      <h1 className="font-display text-4xl text-ink">Orders</h1>
-      <p className="mt-4 text-ink-soft">Orders placeholder.</p>
-    </section>
-  );
-}
-
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -80,7 +72,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'orders',
-        element: <OrdersPlaceholder />,
+        element: <Orders />,
         errorElement: <RouteError />,
       },
     ],
