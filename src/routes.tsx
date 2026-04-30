@@ -5,6 +5,7 @@ import {
   useRouteError,
   type RouteObject,
 } from 'react-router';
+import TopNav from './components/TopNav';
 
 function RouteError() {
   const error = useRouteError();
@@ -34,12 +35,14 @@ function RouteError() {
 function RootLayout() {
   return (
     <>
-      <header className="border-b border-ink-soft/20">
-        <div className="max-w-6xl mx-auto px-6 py-4 text-ink-soft">
-          nav goes here
-        </div>
-      </header>
-      <main id="main">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
+      >
+        Skip to content
+      </a>
+      <TopNav />
+      <main id="main" tabIndex={-1} className="outline-none">
         <Outlet />
       </main>
     </>
