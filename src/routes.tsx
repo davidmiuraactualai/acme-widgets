@@ -7,6 +7,7 @@ import {
 } from 'react-router';
 import TopNav from './components/TopNav';
 import Home from './pages/Home';
+import Widgets, { widgetsLoader, WidgetsHydrateFallback } from './pages/Widgets';
 
 function RouteError() {
   const error = useRouteError();
@@ -50,15 +51,6 @@ function RootLayout() {
   );
 }
 
-function WidgetsPlaceholder() {
-  return (
-    <section className="max-w-6xl mx-auto px-6 py-16">
-      <h1 className="font-display text-4xl text-ink">Widgets</h1>
-      <p className="mt-4 text-ink-soft">Catalog placeholder.</p>
-    </section>
-  );
-}
-
 function OrdersPlaceholder() {
   return (
     <section className="max-w-2xl mx-auto px-6 py-16">
@@ -81,7 +73,9 @@ const routes: RouteObject[] = [
       },
       {
         path: 'widgets',
-        element: <WidgetsPlaceholder />,
+        element: <Widgets />,
+        loader: widgetsLoader,
+        HydrateFallback: WidgetsHydrateFallback,
         errorElement: <RouteError />,
       },
       {
