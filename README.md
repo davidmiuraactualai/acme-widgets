@@ -9,12 +9,45 @@ lives in the Google Doc:
 
 ## Quick Start
 
-Prerequisites: [Bun](https://bun.sh) `>=1.2`.
+### Prerequisites
+
+- **[Bun](https://bun.sh) `>=1.2`** — runtime + package manager + script runner.
+  Vite (the dev server / bundler) is installed for you when you run `bun install`,
+  so you don't need to install it globally.
+
+#### Install Bun
+
+See the official install guide: <https://bun.sh/docs/installation>.
+
+```bash
+# macOS / Linux / WSL
+curl -fsSL https://bun.sh/install | bash
+
+# macOS via Homebrew
+brew install oven-sh/bun/bun
+
+# Windows (PowerShell)
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+Verify:
+
+```bash
+bun --version       # should print 1.2.x or newer
+```
+
+#### About Vite
+
+You don't install Vite globally for this project — it ships as a dev dependency
+(see `package.json`) and is run via the `bun run` scripts below. If you want to
+read up on it: <https://vitejs.dev/guide/>.
+
+### Clone and run
 
 ```bash
 git clone git@github.com:bryanhirsch/acme-widgets-private.git
 cd acme-widgets-private
-bun install
+bun install          # installs Vite and all other deps
 bun run dev          # http://localhost:5173
 ```
 
