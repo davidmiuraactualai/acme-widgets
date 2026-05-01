@@ -18,6 +18,15 @@ type CsvRow = {
   categories?: string;
 };
 
+const REQUIRED_COLUMNS = [
+  'type',
+  'description',
+  'number_in_stock',
+  'price',
+  'icon',
+  'categories',
+] as const;
+
 export function parseWidgetsCsv(csv: string): Widget[] {
   const result = Papa.parse<CsvRow>(csv, {
     header: true,
@@ -29,6 +38,14 @@ export function parseWidgetsCsv(csv: string): Widget[] {
     if (fatal) {
       throw new Error(`CSV parse error: ${fatal.message}`);
     }
+  }
+
+  const fields = result.meta.fields ?? [];
+  const missing = REQUIRED_COLUMNS.filter((c) => !fields.includes(c));
+  if (missing.length > 0) {
+    throw new Error(
+      `Catalog CSV is missing required column(s): ${missing.join(', ')}`,
+    );
   }
 
   const widgets: Widget[] = [];

@@ -56,6 +56,19 @@ describe('parseWidgetsCsv', () => {
     expect(widgets[0]!.price).toBe(0);
   });
 
+  it('throws when a required column is missing or renamed in the header', () => {
+    // Header has "Price ($)" instead of "price" — without fail-loud validation,
+    // every row would silently coerce to price 0. ADR 0002 requires this to throw.
+    const renamedHeader =
+      'type,description,number_in_stock,Price ($),icon,categories';
+    const csv = [
+      renamedHeader,
+      'Classic Brass Widget,desc,42,19.99,brass-widget.svg,everyday',
+    ].join('\n');
+
+    expect(() => parseWidgetsCsv(csv)).toThrow(/missing required column/i);
+  });
+
   it('drops rows with empty type or icon (does not crash)', () => {
     const csv = [
       HEADER,
