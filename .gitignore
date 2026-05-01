@@ -23,6 +23,7 @@ dist/
 # Test artifacts
 playwright-report/
 test-results/
+.playwright-mcp/
 
 # OS
 .DS_Store
