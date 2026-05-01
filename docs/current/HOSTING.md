@@ -40,3 +40,8 @@ The Dolt branches (`build1.0.0/nyc1`, `workshop1.0.0/nyc1`, etc.) live on the **
 - A purely **public** repo would expose the beads issue database (issues, decisions, planning notes) to anyone.
 - A purely **private** repo would require a paid GitHub plan for Pages and Actions on private repos.
 - Splitting code (public) from issue tracker data (private, in Dolt branches on the private remote) keeps everything free while keeping the project notes private.
+
+## Hosting the public repo (or a fork)
+
+- [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md) — enabling and configuring Actions on a fork.
+- [GITHUB_PAGES.md](./GITHUB_PAGES.md) — Pages setup, base-path config, and SPA routing.
