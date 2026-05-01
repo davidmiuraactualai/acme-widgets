@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { parseWidgetsCsv } from './widgets';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { fetchWidgets, parseWidgetsCsv, resetWidgetsCache } from './widgets';
 
 const HEADER =
   'type,description,number_in_stock,price,icon,categories';
@@ -80,5 +80,117 @@ describe('parseWidgetsCsv', () => {
     const widgets = parseWidgetsCsv(csv);
     expect(widgets).toHaveLength(1);
     expect(widgets[0]!.type).toBe('Valid Widget');
+  });
+});
+
+describe('fetchWidgets', () => {
+  const SHEET_BODY = [
+    HEADER,
+    'Sheet Widget,from the live sheet,10,9.99,sheet.svg,everyday',
+  ].join('\n');
+
+  const FALLBACK_BODY = [
+    HEADER,
+    'Bundled Widget,from the local CSV,1,1.00,bundled.svg,everyday',
+  ].join('\n');
+
+  function csvResponse(body: string): Response {
+    return new Response(body, {
+      status: 200,
+      headers: { 'content-type': 'text/csv' },
+    });
+  }
+
+  beforeEach(() => {
+    resetWidgetsCache();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('fetches the sheet, parses it, and caches the result', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(csvResponse(SHEET_BODY));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const first = await fetchWidgets();
+    const second = await fetchWidgets();
+
+    expect(first).toHaveLength(1);
+    expect(first[0]!.type).toBe('Sheet Widget');
+    expect(second).toBe(first);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      import.meta.env.VITE_WIDGETS_SHEET_URL,
+    );
+  });
+
+  it('falls back to the bundled CSV with a console.warn on a network error', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('network down'))
+      .mockResolvedValueOnce(csvResponse(FALLBACK_BODY));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const widgets = await fetchWidgets();
+
+    expect(widgets).toHaveLength(1);
+    expect(widgets[0]!.type).toBe('Bundled Widget');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalled();
+  });
+
+  it('falls back when the sheet returns a non-OK HTTP response', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response('not found', {
+          status: 404,
+          statusText: 'Not Found',
+        }),
+      )
+      .mockResolvedValueOnce(csvResponse(FALLBACK_BODY));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const widgets = await fetchWidgets();
+
+    expect(widgets[0]!.type).toBe('Bundled Widget');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('does NOT fall back when the sheet returns 200 but the CSV is malformed', async () => {
+    // Per ADR 0002: a successful fetch with bad headers means the sheet itself
+    // is misconfigured — surface that as an error rather than papering over it
+    // with stale bundled data.
+    const renamedHeader =
+      'type,description,number_in_stock,Price ($),icon,categories';
+    const malformed = [
+      renamedHeader,
+      'Sheet Widget,desc,10,9.99,sheet.svg,everyday',
+    ].join('\n');
+    const fetchMock = vi.fn().mockResolvedValue(csvResponse(malformed));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchWidgets()).rejects.toThrow(/missing required column/i);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('clears the cache after a rejected fetch so the next call retries', async () => {
+    // Both sheet and fallback fail — the rejection must clear the cache, or
+    // every subsequent page load would replay the same failure.
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('network down'))
+      .mockRejectedValueOnce(new TypeError('still down'))
+      .mockResolvedValueOnce(csvResponse(SHEET_BODY));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchWidgets()).rejects.toThrow();
+
+    const widgets = await fetchWidgets();
+    expect(widgets[0]!.type).toBe('Sheet Widget');
   });
 });
