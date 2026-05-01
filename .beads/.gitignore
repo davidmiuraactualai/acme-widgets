@@ -15,6 +15,11 @@ daemon.*
 # Interactions log (runtime, not versioned)
 interactions.jsonl
 
+# Auto-exported issues snapshot (privacy: avoid leaking issue contents
+# to public remotes/forks). Disable the export with:
+#   bd config set export.auto false
+issues.jsonl
+
 # Push state (runtime, per-machine)
 push-state.json
 
