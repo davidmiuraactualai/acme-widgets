@@ -7,6 +7,11 @@
 # Node / Bun
 node_modules/
 
+# Foreign package-manager lockfiles (this project uses bun.lock)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # Build output
 dist/
 .vite/
