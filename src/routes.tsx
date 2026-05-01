@@ -8,7 +8,11 @@ import {
 import TopNav from './components/TopNav';
 import Home from './pages/Home';
 import Orders from './pages/Orders';
-import Widgets, { widgetsLoader, WidgetsHydrateFallback } from './pages/Widgets';
+import Widgets, {
+  widgetsLoader,
+  WidgetsHydrateFallback,
+  WidgetsRouteError,
+} from './pages/Widgets';
 
 function RouteError() {
   const error = useRouteError();
@@ -68,7 +72,7 @@ const routes: RouteObject[] = [
         element: <Widgets />,
         loader: widgetsLoader,
         HydrateFallback: WidgetsHydrateFallback,
-        errorElement: <RouteError />,
+        errorElement: <WidgetsRouteError />,
       },
       {
         path: 'orders',

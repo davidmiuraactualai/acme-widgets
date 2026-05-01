@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useLoaderData, useSearchParams } from 'react-router';
+import { Link, useLoaderData, useRouteError, useSearchParams } from 'react-router';
 import WidgetCard from '../components/WidgetCard';
 import WidgetCardSkeleton from '../components/WidgetCardSkeleton';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -8,6 +8,45 @@ import { fetchWidgets } from '../lib/widgets';
 
 export async function widgetsLoader(): Promise<Widget[]> {
   return fetchWidgets();
+}
+
+export function WidgetsRouteError() {
+  const error = useRouteError();
+  const isDev = import.meta.env.DEV;
+  const detail =
+    isDev && error instanceof Error ? error.message : null;
+
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-16">
+      <h1 className="font-display font-black text-[44px] text-ink">
+        The Catalog is temporarily unavailable
+      </h1>
+      <p className="font-sans text-[16px] text-ink-soft mt-4 max-w-prose">
+        We couldn&rsquo;t load the widget catalog right now. This is usually a
+        transient issue — try refreshing in a few minutes. If it persists,
+        please get in touch.
+      </p>
+      {detail && (
+        <pre className="mt-6 max-w-prose whitespace-pre-wrap rounded bg-ink/5 p-3 font-mono text-[12px] text-ink-soft">
+          {detail}
+        </pre>
+      )}
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          to="/"
+          className="bg-brass-600 hover:bg-brass-700 text-paper font-sans font-semibold text-[16px] px-6 py-3 rounded-full shadow-md transition"
+        >
+          Back to home
+        </Link>
+        <Link
+          to="/orders"
+          className="border-2 border-brass-600 text-ink font-sans font-semibold text-[16px] px-6 py-3 rounded-full hover:bg-brass-50 transition"
+        >
+          How to order
+        </Link>
+      </div>
+    </section>
+  );
 }
 
 export function WidgetsHydrateFallback() {
