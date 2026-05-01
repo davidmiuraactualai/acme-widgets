@@ -47,5 +47,17 @@ for the decision record.
   `components/` contains shared chrome and the 15 widget presets;
   `lib/widgets.ts` is the CSV parser + cache.
 - `e2e/` — Playwright specs.
-- `public/data/widgets.csv` — the catalog. Edit this to change the
-  inventory; no rebuild required for content changes outside dev.
+- `public/data/widgets.csv` — last-resort fallback for the catalog if the
+  Google Sheet can't be reached. Editing this file does **not** change
+  the live site; see below.
+
+## Editing the catalog
+
+Widget data (prices, stock counts, descriptions) lives in a Google Sheet,
+not in this repo. Producers and employees edit the sheet directly; changes
+appear on the live site within a few minutes — no PR, no deploy.
+
+See [`docs/current/EDITING_THE_CATALOG.md`](docs/current/EDITING_THE_CATALOG.md)
+for the sheet location and editing rules. The architecture choice is
+captured in
+[`docs/decision-records/0002.ADR.DYNAMIC_WIDGET_CATALOG.md`](docs/decision-records/0002.ADR.DYNAMIC_WIDGET_CATALOG.md).

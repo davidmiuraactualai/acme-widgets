@@ -50,6 +50,30 @@ two — every preset in `src/components/widgetPresets.tsx` assumes v4
 arbitrary-value syntax (`text-[clamp(40px,6vw,72px)]`,
 `bg-brass-600`, etc.).
 
+## Catalog data source
+
+The widget catalog is fetched live from a Google Sheet, not bundled
+into the build. This is the as-built side of
+[`../decision-records/0002.ADR.DYNAMIC_WIDGET_CATALOG.md`](../decision-records/0002.ADR.DYNAMIC_WIDGET_CATALOG.md).
+
+- **Live source:** the published-CSV URL in `VITE_WIDGETS_SHEET_URL`
+  (defined in `.env`, typed in `src/vite-env.d.ts`). A fresh clone runs
+  against the canonical Acme Widgets sheet with no setup. Override
+  locally by creating `.env.local` (gitignored) with a different value.
+- **Fallback:** `public/data/widgets.csv`. Used only when the live fetch
+  fails (network error or non-OK HTTP). When the fallback fires, the
+  browser console gets a `console.warn`. The fallback CSV is a snapshot
+  and may drift from the live sheet — that's accepted for the demo.
+- **Schema policy:** a row missing `type` or `icon` is skipped with a
+  warning (recoverable — the rest of the catalog renders). A header
+  with a renamed required column (`type`, `description`,
+  `number_in_stock`, `price`, `icon`, `categories`) **throws**. The
+  `/widgets` route renders `WidgetsRouteError` in that case rather than
+  silently corrupting prices.
+- **Producer workflow:** see
+  [EDITING_THE_CATALOG](EDITING_THE_CATALOG.md). Producers edit the
+  sheet; engineers do not ship PRs to update prices or stock counts.
+
 ## `BASE_URL` convention
 
 The site has to work in two places: at `/` in dev and at
@@ -63,10 +87,12 @@ by `import.meta.env.BASE_URL`:
 - **Router basename:** `createBrowserRouter(routes, { basename: import.meta.env.BASE_URL })`
   in `src/routes.tsx`. **Do not** double-prefix in `<Link to>` calls —
   pass app-relative paths only (e.g. `to="/widgets"`).
-- **Asset fetches:** prefix with `import.meta.env.BASE_URL`. Example:
-  `fetch(\`${import.meta.env.BASE_URL}data/widgets.csv\`)` in
-  `src/lib/widgets.ts`. `BASE_URL` already has a trailing slash; do
-  not double up.
+- **Asset fetches:** prefix with `import.meta.env.BASE_URL` for any
+  asset under `public/`. The fallback widgets CSV in `src/lib/widgets.ts`
+  uses this pattern (`${import.meta.env.BASE_URL}data/widgets.csv`).
+  `BASE_URL` already has a trailing slash; do not double up. The live
+  catalog URL (`VITE_WIDGETS_SHEET_URL`) is absolute and does **not**
+  use `BASE_URL`.
 
 If you add a new fetch of a `public/` asset, follow the same pattern.
 

@@ -9,7 +9,7 @@ able to find a widget or learn how to order one within a single click.
 | Path       | Purpose                                                                                          |
 |------------|--------------------------------------------------------------------------------------------------|
 | `/`        | Home page advertising Acme Widgets — widgets for all purposes and occasions.                     |
-| `/widgets` | Listing of every widget for sale, sourced from `public/data/widgets.csv`.                        |
+| `/widgets` | Listing of every widget for sale, sourced live from a Google Sheet (see [EDITING_THE_CATALOG](EDITING_THE_CATALOG.md)). |
 | `/orders`  | Placeholder explaining that online orders are coming soon; meanwhile, email `sales@acmewidgets.com`. |
 
 ## Navigation
