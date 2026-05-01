@@ -17,6 +17,9 @@ dist/
 .vite/
 *.tsbuildinfo
 
+# Local env overrides (Vite convention; `.env` itself is committed)
+*.local
+
 # Test artifacts
 playwright-report/
 test-results/
