@@ -72,20 +72,38 @@ export function parseWidgetsCsv(csv: string): Widget[] {
   return widgets;
 }
 
+async function fetchCatalogCsv(url: string): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(
+      `Failed to load catalog (${response.status} ${response.statusText})`,
+    );
+  }
+  return response.text();
+}
+
 let cache: Promise<Widget[]> | null = null;
 
 export function fetchWidgets(): Promise<Widget[]> {
   if (cache) return cache;
   cache = (async () => {
-    const url = `${import.meta.env.BASE_URL}data/widgets.csv`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load catalog (${response.status} ${response.statusText})`,
+    const sheetUrl = import.meta.env.VITE_WIDGETS_SHEET_URL;
+    const fallbackUrl = `${import.meta.env.BASE_URL}data/widgets.csv`;
+    let csv: string;
+    try {
+      csv = await fetchCatalogCsv(sheetUrl);
+    } catch (error) {
+      // Fall back only when the sheet itself is unreachable (network error or
+      // non-OK HTTP). A successful fetch with malformed CSV propagates from
+      // parseWidgetsCsv below — per ADR 0002, bad data fails loud rather than
+      // being papered over with stale bundled data.
+      console.warn(
+        'Sheet catalog unreachable; falling back to bundled widgets.csv.',
+        error,
       );
+      csv = await fetchCatalogCsv(fallbackUrl);
     }
-    const text = await response.text();
-    return parseWidgetsCsv(text);
+    return parseWidgetsCsv(csv);
   })();
   cache.catch(() => {
     cache = null;
