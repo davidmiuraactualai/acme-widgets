@@ -14,11 +14,14 @@ The acme-widgets training project is one local working tree synced to **two GitH
 
 | Branch           | Purpose                                                                              |
 | ---------------- | ------------------------------------------------------------------------------------ |
-| `development`    | Main development branch — where the demo website for the workshop gets built         |
+| `main`           | Production branch — powers GitHub Pages; workshop participants merge their finished work here |
+| `development`    | Main development branch — where the demo website for the workshop gets built before merging to `main` |
 | `dev/start-here` | Workshop starting point for participants                                             |
 | `dev/<slug>`     | Targeted starting points for individual modules and lessons (WIP scaffolds)          |
 
 Every Git branch above is pushed to **both** remotes. Only the Dolt orphan branches (`build1.0.0/nyc1`, `workshop1.0.0/nyc1`, etc.) stay on the private remote; they're managed by `bd dolt push` / `bd dolt pull`.
+
+The Pages deploy workflow (`.github/workflows/deploy.yml`) triggers on push to `main`, so a deploy fires when finished work lands there.
 
 ## Pushing
 
@@ -32,9 +35,9 @@ For convenience, configure a single `both` remote whose push URLs cover origin a
 
 ## What ends up where
 
-- **Public remote (`public`):** every Git branch (`development`, `dev/start-here`, `dev/<slug>`, …). No Dolt branches. The `.beads/` config files are present in tree but contain no issue content — only project bootstrap metadata.
+- **Public remote (`public`):** every Git branch (`main`, `development`, `dev/start-here`, `dev/<slug>`, …). No Dolt branches. The `.beads/` config files are present in tree but contain no issue content — only project bootstrap metadata.
 - **Private remote (`origin`):** every Git branch **plus** the Dolt branches. Source of truth for both code and issue tracking.
-- **GitHub Pages:** deploys from the **public** remote. Free tier requires a public repo.
+- **GitHub Pages:** deploys from `public/main`. Free tier requires a public repo.
 - **GitHub Actions CI:** runs on the **public** remote. Free tier for public repos.
 
 ## Working with this setup
