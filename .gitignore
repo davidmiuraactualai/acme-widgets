@@ -1,0 +1,25 @@
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Node / Bun
+node_modules/
+
+# Foreign package-manager lockfiles (this project uses bun.lock)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+.vite/
+*.tsbuildinfo
+
+# Test artifacts
+playwright-report/
+test-results/
+
+# OS
+.DS_Store
